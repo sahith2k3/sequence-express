@@ -1,1 +1,13 @@
 /** Add styles here */
+
+.board{
+    background: black;
+    margin-left: 40%;
+    width: fit-content;
+    padding: 2rem;
+    border-radius: 1rem;
+}
+
+.card{
+    height: 40px;
+}
