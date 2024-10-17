@@ -5,8 +5,18 @@
 </head>
 <body>
     <div class="content">
-        <div class="board">
-
+        <div class="board">    
+            <table>
+                <% for (let i = 0; i < 10; i++) { %>
+                <tr>
+                    <% for (let j = 0; j < 10; j++) { %>
+                    <td>
+                        <img class="card" src="images/<%= boardData[i + ',' + j] %>.png" alt="<%= boardData[i + ',' + j] %>">
+                    </td>
+                    <% } %>
+                </tr>
+                <% } %>
+            </table>
         </div>
 
         <div class="hand">
