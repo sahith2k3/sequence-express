@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path')
+const fs = require('fs');
 
 const app = express();
 
@@ -10,7 +11,8 @@ app.use(express.static(path.join(__dirname, 'public')))
   .set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
-  res.render('index');
+  const boardData = JSON.parse(fs.readFileSync('./views/board_data.json', 'utf-8'));
+  res.render('index', { boardData });
 });
 
 app.get('/api', (req, res) => {
