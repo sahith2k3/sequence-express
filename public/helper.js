@@ -3,14 +3,18 @@ var $cards = $(".hand_card");
 var $style = $(".hover");
 
 document.addEventListener('DOMContentLoaded', () => {
-    const socket = new WebSocket(`ws://${window.location.host}`);
-  
+    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    const socket = new WebSocket(`${protocol}://${window.location.host}`);
+
+    let clientID;
+    const username = window.username;
+
     // Connection opened
     socket.addEventListener('open', (event) => {
       console.log('WebSocket connection established');
       
       // Send a message to the server
-      socket.send('Player has joined the game');
+      socket.send(JSON.stringify({ type: 'join', username: username }));
     });
   
     // Listen for messages from the server
@@ -23,12 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendMove = (moveData) => {
       socket.send(JSON.stringify(moveData)); // Send move data as a JSON string
     };
-  
-    // Example of triggering a move (replace with actual game move logic)
-    document.querySelector('#card').addEventListener('click', () => {
-      const moveData = { player: 1, move: 'A1' }; // Example move
-      sendMove(moveData);  // Send move data to the server
-    });
+    
   });
 
 $cards

@@ -7,10 +7,10 @@ const app = express();
 
 const port = parseInt(process.env.PORT) || process.argv[3] || 8080;
 
-let users = [];
+let users = new Map();
 
-function addUser(username, ip) {
-  users.push({ username, ip });
+function addUser(username, socket) {
+  users.set(username, socket);
 }
 
 app.use(express.static(path.join(__dirname, 'public')))
@@ -23,10 +23,10 @@ app.get('/', (req, res) => {
 
 app.get('/game', (req, res) => {
   const username = req.query.username;
-  const ip = req.ip;
-  addUser(username, ip);
+  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  console.log(username, ip);
   const boardData = JSON.parse(fs.readFileSync('./views/board_data.json', 'utf-8'));
-  res.render('index', { boardData, users });
+  res.render('index', { boardData, username });
 });
 
 
@@ -57,14 +57,25 @@ wss.on('connection', (socket) => {
   // Handle incoming messages from the client
   socket.on('message', (message) => {
     console.log(`Received: ${message}`);
+
+    message = JSON.parse(message);
+
+    if (message.type === 'join') {
+      addUser(message.username + Date.now(), socket);
+    };
+
+
     console.log(users);
 
+    socket.send("Added you successfully");
+
     // Broadcast the message to all connected clients
-    wss.clients.forEach((client) => {
-      if (client.readyState === ws.OPEN) {
-        client.send(message);
-      }
-    });
+    // wss.clients.forEach((client) => {
+    //   if (client.readyState === ws.OPEN) {
+    //     client.send(message);
+    //   }
+    // });
+
   });
 
   // Handle client disconnection

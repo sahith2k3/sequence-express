@@ -12,7 +12,7 @@
                 <div class="Users"> 
                     <h1> Players </h1>
             
-                    <% for (let i = 0; i < users; i++){ %>
+                    <% for (let i = 1; i < 7; i++){ %>
                         <div id="user<%= i %>" class="UserName">
                             User <%= i %>
                         </div> 
@@ -61,6 +61,11 @@
             </div>
         </div>
 
-    </div> 
+    </div>
+    
+    <script>
+        // Embed the username in a global variable
+        window.username = "<%= username %>";
+    </script>
 </body>
 </html>
