@@ -2,6 +2,7 @@ var x;
 var $cards = $(".hand_card");
 var $style = $(".hover");
 
+
 document.addEventListener('DOMContentLoaded', () => {
     const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
     const socket = new WebSocket(`${protocol}://${window.location.host}`);
@@ -20,8 +21,29 @@ document.addEventListener('DOMContentLoaded', () => {
     // Listen for messages from the server
     socket.addEventListener('message', (event) => {
       console.log('Message from server: ', event.data);
-      // You can update the game board or UI with the message received from the server
+
+      const message = JSON.parse(event.data);
+
+
+      if (message.type === 'hand') {
+        console.log('Initial hand: ', message.hand);
+
+        const handCardDiv = document.getElementById('hand-cards');
+        handCardDiv.innerHTML = '';
+        message.hand.forEach(card => {
+            const img = document.createElement('img');
+            img.src = `images/${card}.png`
+            img.classList.add('hand_card');
+            handCardDiv.appendChild(img);
+
+            requestAnimationFrame(()=>{
+              img.classList.add('animated')
+            })
+        });
+      }
     });
+
+
   
     // Send a message when a player makes a move (you can call this function when needed)
     const sendMove = (moveData) => {

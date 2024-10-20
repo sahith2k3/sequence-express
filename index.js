@@ -1,5 +1,5 @@
 const express = require('express');
-const path = require('path')
+const path = require('path');
 const fs = require('fs');
 const ws = require('ws');
 
@@ -11,6 +11,20 @@ let users = new Map();
 
 function addUser(username, socket) {
   users.set(username, socket);
+}
+
+function initialHand() {
+  const b = JSON.parse(fs.readFileSync('./views/board_data.json', 'utf-8'));
+  let hand = new Set();
+  while (hand.size !== 7) {
+    const ind = Math.floor(Math.random() * Object.keys(b).length);
+    const card = Object.keys(b)[ind];
+    if(b[card] != "blank_card"){
+      hand.add(b[card]);
+    }
+  }
+  console.log(Array.from(hand));
+  return Array.from(hand);
 }
 
 app.use(express.static(path.join(__dirname, 'public')))
@@ -29,32 +43,19 @@ app.get('/game', (req, res) => {
   res.render('index', { boardData, username });
 });
 
-
-// app.get('/', (req, res) => {
-//   const boardData = JSON.parse(fs.readFileSync('./views/board_data.json', 'utf-8'));
-//   res.render('index', { boardData, users });
-// });
-
 app.get('/api', (req, res) => {
-  res.json({"msg": "Hello world"});
+  res.json({ "msg": "Hello world" });
 });
-
-// app.listen(port, () => {
-//   console.log(`Listening on http://localhost:${port}`);
-// })
 
 const server = app.listen(port, () => {
   console.log(`Listening on http://localhost:${port}`);
 });
 
-// Create the WebSocket server and attach it to the HTTP server
 const wss = new ws.Server({ server });
 
-// WebSocket connection event
 wss.on('connection', (socket) => {
   console.log('A new client connected!');
 
-  // Handle incoming messages from the client
   socket.on('message', (message) => {
     console.log(`Received: ${message}`);
 
@@ -62,23 +63,17 @@ wss.on('connection', (socket) => {
 
     if (message.type === 'join') {
       addUser(message.username + Date.now(), socket);
-    };
-
+      const h = initialHand();
+      console.log(h);
+      const hand = initialHand();
+      socket.send(JSON.stringify({ type: 'hand', hand }));
+    }
 
     console.log(users);
 
-    socket.send("Added you successfully");
-
-    // Broadcast the message to all connected clients
-    // wss.clients.forEach((client) => {
-    //   if (client.readyState === ws.OPEN) {
-    //     client.send(message);
-    //   }
-    // });
-
+    socket.send(JSON.stringify({type: 'mssg',m:'Added Successfully'}));
   });
 
-  // Handle client disconnection
   socket.on('close', () => {
     console.log('Client disconnected');
   });
