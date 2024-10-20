@@ -98,5 +98,14 @@
     "9,6": "clubs_queen",
     "9,7": "clubs_king",
     "9,8": "clubs_ace",
-    "9,9": "blank_card"
+    "9,9": "blank_card",
+
+    "0,10": "spades_jack",
+    "0,11": "spades_jack",
+    "0,12": "diamonds_jack",
+    "0,13": "diamonds_jack",
+    "0,14": "clubs_jack",
+    "0,15": "clubs_jacks",
+    "0,16": "hearts_jack",
+    "0,17": "hearts_jack"
 }
