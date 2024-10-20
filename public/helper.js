@@ -2,25 +2,34 @@ var x;
 var $cards = $(".hand_card");
 var $style = $(".hover");
 
-const ws = new WebSocket('ws://localhost:8090');
-
-ws.onopen = function() {
-    console.log('connected');
-    ws.send('Hello Server!');
-};
-
-ws.onmessage = function(event) {
-    console.log('received: %s', event.data);
-    document.getElementById('message').innerText = event.data;
-};
-
-ws.onerror = function(error) {
-    console.error('WebSocket error:', error);
-};
-
-ws.onclose = function() {
-    console.log('disconnected');
-};
+document.addEventListener('DOMContentLoaded', () => {
+    const socket = new WebSocket(`ws://${window.location.host}`);
+  
+    // Connection opened
+    socket.addEventListener('open', (event) => {
+      console.log('WebSocket connection established');
+      
+      // Send a message to the server
+      socket.send('Player has joined the game');
+    });
+  
+    // Listen for messages from the server
+    socket.addEventListener('message', (event) => {
+      console.log('Message from server: ', event.data);
+      // You can update the game board or UI with the message received from the server
+    });
+  
+    // Send a message when a player makes a move (you can call this function when needed)
+    const sendMove = (moveData) => {
+      socket.send(JSON.stringify(moveData)); // Send move data as a JSON string
+    };
+  
+    // Example of triggering a move (replace with actual game move logic)
+    document.querySelector('#card').addEventListener('click', () => {
+      const moveData = { player: 1, move: 'A1' }; // Example move
+      sendMove(moveData);  // Send move data to the server
+    });
+  });
 
 $cards
 .on("mousemove touchmove", function(e) { 

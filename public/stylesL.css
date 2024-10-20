@@ -1,0 +1,41 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevent scrollbars */
+}
+
+.landing {
+    background-color: #ffffff;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.background-text {
+    position: absolute;
+    top: 0px;
+    right: -600px;
+    width: 200%;
+    height: 200%;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" ><text x="0%" y="65%" font-family="STCaiyun" font-weight="bold" font-size="240" fill="blue" transform="rotate(-45)" text-anchor="middle" dominant-baseline="middle">SEQUENCE</text></svg>') repeat;
+    animation: moveBackground 50s linear infinite;
+}
+
+@keyframes moveBackground {
+    from {
+        transform: translate(0, 0);
+    }
+    to {
+        transform: translate(50%, -50%);
+    }
+}
+
+.landing h1, .landing form {
+    position: relative;
+    z-index: 1;
+}
