@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const img = document.createElement('img');
             img.src = `images/${card}.png`
             img.classList.add('hand_card');
+            img.id = card;
             handCardDiv.appendChild(img);
 
             img.addEventListener('click',()=>{
@@ -121,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let name = cardElement.alt;
 
     if(name === selectedHandCard){
-        cardElement.addEventListener('click',dummy);
+        cardElement.addEventListener('click',()=> dummy(cardElement));
     }else{
         cardElement.removeEventListener('click',dummy)
     }
@@ -132,8 +133,19 @@ document.addEventListener('DOMContentLoaded', () => {
     selectedHandCard = card;
   }
 
-  function dummy(){
+  function dummy(c) {
     console.log('Matches');
-    
-  }
+
+    // Remove the card from the hand
+    if(selectedHandCard){
+      const handCardDiv = document.getElementById('hand-cards');
+      const card = document.getElementById(selectedHandCard);
+
+      if(card){
+        handCardDiv.removeChild(card);
+      }
+
+    }
+}
+
 
