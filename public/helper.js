@@ -1,6 +1,5 @@
 var x;
-
-
+var selectedHandCard;
 
 document.addEventListener('DOMContentLoaded', () => {
     const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
@@ -35,9 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
             img.classList.add('hand_card');
             handCardDiv.appendChild(img);
 
-            // requestAnimationFrame(()=>{
-            //   img.classList.add('animated')
-            // })
+            img.addEventListener('click',()=>{
+              handleClick(card);
+            })
         });
         
         var $cards = $(".hand_card");
@@ -108,4 +107,33 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
   });
+
+  const boardCards = document.querySelectorAll('.board .card');
+  boardCards.forEach((card)=>{
+    card.addEventListener('mousemove',(e)=>{
+        handleMove(e,card)
+    })
+  })
+
+  function handleMove(e,cardElement){
+    if(!selectedHandCard) return ;
+
+    let name = cardElement.alt;
+
+    if(name === selectedHandCard){
+        cardElement.addEventListener('click',dummy);
+    }else{
+        cardElement.removeEventListener('click',dummy)
+    }
+  }
+
+  function handleClick(card){
+    console.log(`Clicked Card ${card}`);
+    selectedHandCard = card;
+  }
+
+  function dummy(){
+    console.log('Matches');
+    
+  }
 
