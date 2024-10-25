@@ -126,6 +126,14 @@
   z-index: 1;
 }
 
+.highlight {
+  outline: 5px solid rgb(255, 242, 0); /* Yellow border to highlight the card */
+  background-color: rgba(255, 255, 0, 0.3); /* Light yellow background */
+  box-shadow: 0 0 10px rgba(255, 255, 0, 0.5); /* Glowing effect */
+  transition: all 0.3s ease-in-out; /* Smooth transition for the highlight effect */
+  transform: scale(2);
+}
+
 .hand_card:after {
   opacity: 1;
   background-image: url("https://assets.codepen.io/13471/sparkles.gif"), 

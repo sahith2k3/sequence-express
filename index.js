@@ -5,7 +5,7 @@ const ws = require('ws');
 
 const app = express();
 
-const port = parseInt(process.env.PORT) || process.argv[3] || 8091;
+const port = parseInt(process.env.PORT) || process.argv[3] || 8080;
 
 let users = new Map();
 

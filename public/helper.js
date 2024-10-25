@@ -44,6 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
         var $style = $(".hover");
 
         $cards.on("mousemove touchmove", function(e) { 
+          highlightcards(this.id);
+          console.log(this.id);
           // normalise touch/mouse
           var pos = [e.offsetX,e.offsetY];
           e.preventDefault();
@@ -88,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
           clearTimeout(x);
       }).on("mouseout touchend touchcancel", function() {
+          removeHighlight();
           // remove css, apply custom animation on end
           var $card = $(this);
           $style.html("");
@@ -128,13 +131,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  var highlightedcards = [];
+
+  function highlightcards(card){
+    let cards = document.querySelectorAll('.board .card');
+    console.log(cards);
+
+    cards.forEach((c)=>{
+        if(c.alt === card){
+            c.classList.add('highlight');
+            highlightedcards.push(c);
+            return c;
+        }
+    });
+  }
+
+  function removeHighlight(){
+    highlightedcards.forEach((c)=>{
+        c.classList.remove('highlight');
+    });
+  }
+
   function handleClick(card){
+    removeHighlight();
     console.log(`Clicked Card ${card}`);
     selectedHandCard = card;
+
+    highlightcards(card);
   }
 
   function dummy(c) {
     console.log('Matches');
+
+    removeHighlight();
 
     // Remove the card from the hand
     if(selectedHandCard){
@@ -146,6 +175,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
     }
-}
+  }
 
 
