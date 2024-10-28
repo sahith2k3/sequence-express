@@ -4,7 +4,17 @@ class Game{
         this.n=10;
         this.m=10;
         this.sequenceBoard = new Board(n,m);
+        setBonusChips(this.sequenceBoard);
         this.playerSize=playerSize;
+    }
+    setBonusChips(board) // 4 is bonus chip
+    {
+        let n=board.n;
+        let m=board.m;
+        board.setVal(0,0,4);
+        board.setVal(0,m-1,4);
+        board.setVal(n-1,0,4);
+        board.setVal(n-1,m-1,4);
     }
     validateCoordinates(x,y)
     {
@@ -20,7 +30,7 @@ class Game{
         else
         return false;
     }
-    placeToken(x,y,color) //1 is red , 2 is black , 3 is blue , 0 is null
+    placeToken(x,y,color) //1 is red , 2 is black , 3 is blue , 4 is bonus, 0 is empty
     {
         if(isFree(x,y))
         this.sequenceBoard.setVal(x,y,color);
@@ -33,7 +43,7 @@ class Game{
     {
         this.sequenceBoard.setVal(x,y,0);
     }
-    checkSequence()
+    checkSequence(color)
     {
         
     }
