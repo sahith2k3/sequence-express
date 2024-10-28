@@ -1,9 +1,41 @@
 class Game{
     constructor(playerSize)
     {
-        this.board = new Board(10,10);
+        this.n=10;
+        this.m=10;
+        this.sequenceBoard = new Board(n,m);
         this.playerSize=playerSize;
-        this.b=1;
+    }
+    validateCoordinates(x,y)
+    {
+        if(x<this.n && x>=0 && y<this.m && y>=0)
+        return true;
+        else
+        return false;
+    }
+    isFree(x,y)
+    {
+        if(this.sequenceBoard.getVal(x,y)==0)
+        return true;
+        else
+        return false;
+    }
+    placeToken(x,y,color) //1 is red , 2 is black , 3 is blue , 0 is null
+    {
+        if(isFree(x,y))
+        this.sequenceBoard.setVal(x,y,color);
+    }
+    forcePlaceToken(x,y,color)
+    {
+        this.sequenceBoard.setVal(x,y,color);
+    }
+    removeToken(x,y)
+    {
+        this.sequenceBoard.setVal(x,y,0);
+    }
+    checkSequence()
+    {
+        
     }
 }
 class Board{
