@@ -15,7 +15,7 @@ function addUser(username, socket) {
   users.set(username, socket);
 }
 
-const card_list =  JSON.parse(fs.readFileSync('./views/board_data.json', 'utf-8'));
+const card_list = JSON.parse(fs.readFileSync('./views/board_data.json', 'utf-8'));
 delete card_list["0,0"]
 delete card_list["0,9"]
 delete card_list["9,0"]
@@ -25,7 +25,7 @@ delete card_list["9,9"]
 var deck = Object.values(card_list);
 deck = deck.sort(() => Math.random() - 0.5);
 
-function givehand(){
+function givehand() {
   var hand = [];
   for (var i = 0; i < 7; i++) {
     hand.push(deck.pop());
@@ -33,7 +33,7 @@ function givehand(){
   return hand;
 }
 
-function givecard(){
+function givecard() {
   return deck.pop();
 }
 
@@ -73,25 +73,33 @@ wss.on('connection', (socket) => {
 
     if (message.type === 'join') {
       const userId = message.username;
-      addUser(userId, socket);      
-      
+      addUser(userId, socket);
+
       let hand;
       if (userHands.has(userId)) {
         hand = userHands.get(userId);
       } else {
         hand = givehand();
         userHands.set(userId, hand);
-      }      
-      
+      }
+
       socket.send(JSON.stringify({ type: 'hand', hand }));
 
       console.log(users.keys());
-      socket.send(JSON.stringify({type: 'mssg',m:'Added Successfully'}));
+      socket.send(JSON.stringify({ type: 'mssg', m: 'Added Successfully' }));
     }
 
     if (message.type === 'move') {
       console.log('Playing card: ', message.card);
-      socket.send(JSON.stringify({type: "newcard", "card" : givecard()}));
+
+      var userhand = userHands.get(message.username);
+      var index = userhand.indexOf(message.card);
+      userhand.splice(index, 1);
+      var newcard = givecard();
+      userhand.push(newcard);
+      userHands.set(message.username, userhand);
+
+      socket.send(JSON.stringify({ type: "newcard", "card": newcard }));
     }
   });
 

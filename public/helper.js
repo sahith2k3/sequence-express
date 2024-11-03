@@ -254,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (card) {
         handCardDiv.removeChild(card);
-        socket.send(JSON.stringify({ type: 'move', "card": selectedHandCard, "index": boardCardDivElement.getAttribute('data-card-name') }));
+        socket.send(JSON.stringify({ type: 'move', "username":username, "card": selectedHandCard, "index": boardCardDivElement.getAttribute('data-card-name') }));
         selectedHandCard = null;
       }
     }
