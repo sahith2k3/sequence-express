@@ -52,7 +52,9 @@
                     <tr>
                         <% for (let j = 0; j < 10; j++) { %>
                         <td>
-                            <img class="card" src="images/<%= boardData[i + ',' + j] %>.png" alt="<%= boardData[i + ',' + j] %>">
+                            <div class="card-container" id="<%= i + "," + j %>" alt="<%= boardData[i + ',' + j] %>" data-card-name="<%= boardData[i + ',' + j] %>" >
+                                <img class="card" src="images/<%= boardData[i + ',' + j] %>.png" alt="<%= boardData[i + ',' + j] %>">
+                            </div>
                         </td>
                         <% } %>
                     </tr>

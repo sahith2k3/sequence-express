@@ -277,12 +277,29 @@
     padding-bottom: 2.4rem;
     padding-right: 1rem;
     border-radius: 1rem;
-
 }
 
-.card{
-    width: 60px;
-    transform: rotate(-90deg);
-    margin-right: 25px;
-    margin-bottom: -30px;
+.card-container {
+  position: relative;
+  display: inline-block; /* Ensures that the div only takes up as much space as the image */
+}
+
+.card {
+  width: 60px;
+  transform: rotate(-90deg);
+  margin-right: 25px;
+  margin-bottom: -30px;
+}
+
+.circle {
+  position: absolute;
+  top: 70%;
+  left: 40%;
+  width: 30px;
+  height: 30px;
+  background-color: rgba(255, 0, 0, 1);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 100;
 }

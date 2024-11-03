@@ -23,6 +23,7 @@ function initialHand() {
       hand.add(b[card]);
     }
   }
+  // console.log("1");
   console.log(Array.from(hand));
   return Array.from(hand);
 }
@@ -63,15 +64,16 @@ wss.on('connection', (socket) => {
 
     if (message.type === 'join') {
       addUser(message.username + Date.now(), socket);
-      const h = initialHand();
-      console.log(h);
       const hand = initialHand();
       socket.send(JSON.stringify({ type: 'hand', hand }));
+
+      console.log(users.keys());
+      socket.send(JSON.stringify({type: 'mssg',m:'Added Successfully'}));
     }
 
-    console.log(users);
-
-    socket.send(JSON.stringify({type: 'mssg',m:'Added Successfully'}));
+    if (message.type === 'move') {
+      console.log('Playing card: ', message.card);
+    }
   });
 
   socket.on('close', () => {
