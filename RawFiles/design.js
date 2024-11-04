@@ -37,8 +37,8 @@ class SequenceDeck{
         return deck.pop();
     }
     
-}
-class Board{
+  }
+  class Board{
     constructor(n,m)
     {
         this.n=n;
@@ -117,28 +117,8 @@ class Board{
         }
     }
     
-}
-function random_number()
-{
-    let x=Math.random();
-    let y=Math.pow(10,15);
-    return Math.floor(x*y);
-}
-function random_number_between(a,b)
-{
-    if(a>b)
-    {
-        let temp=a;
-        a=b;
-        b=temp;
-    }
-    let size=(b-a+1);
-    let val=random_number();
-    val=val%size;
-    val=val+a;
-    return val;
-}
-class Game{
+  }
+  class Game{
     constructor()
     {
         this.n=10;
@@ -237,6 +217,12 @@ class Game{
         return -1;
         
     }
+    random_number()
+    {
+      let x=Math.random();
+      let y=Math.pow(10,15);
+      return Math.floor(x*y);
+    }
     start()
     {
         let r = this.teamCheck();
@@ -244,7 +230,7 @@ class Game{
         {
             this.stat=1;
             this.dealCards();
-            this.turn = random_number()%2;
+            this.turn = this.random_number()%2;
             return 1;
         }
         else
@@ -305,7 +291,7 @@ class Game{
         else
         return false;
     }
-    playCard(x,y,card,color)
+    playCardOnBoard(x,y,card,color)
     {
         if(this.isJack(card))
         {
@@ -335,30 +321,35 @@ class Game{
             return -1;
         }
     }
+    playCard(playerIndex,card,x,y)
+    {
+        
+    }
     checkSequence(color)
     {
         
     }
-}
-var myBoard= new Board(10,10);
-var row = [1,2,3,4,5,6,7,8,9,10];
-var sequenceLayout = [
-                    [1,2,3,4,5,6,7,8,9,10],
-                    [1,2,3,4,5,6,7,8,9,10],
-                    [1,2,3,4,5,6,7,8,9,10],
-                    [1,2,3,4,5,6,7,8,9,10],
-                    [1,2,3,4,5,6,7,8,9,10],
-                    [1,2,3,4,5,6,7,8,9,10],
-                    [1,2,3,4,5,6,7,8,9,10],
-                    [1,2,3,4,5,6,7,8,9,10],
-                    [1,2,3,4,5,6,7,8,9,10],
-                    [1,2,3,4,5,6,7,8,9,10]
-                ]
-var layoutBoard = new Board(10,10);
-layoutBoard.initializeBoard(sequenceLayout);
-layoutBoard.printBoard();
-var game = new Game(6);
-var ans = game.playCard(1,1,24,1);
-game.sequenceBoard.printBoard();
-
-
+  }
+  var myBoard= new Board(10,10);
+  var row = [1,2,3,4,5,6,7,8,9,10];
+  var sequenceLayout = [
+                      [1,2,3,4,5,6,7,8,9,10],
+                      [1,2,3,4,5,6,7,8,9,10],
+                      [1,2,3,4,5,6,7,8,9,10],
+                      [1,2,3,4,5,6,7,8,9,10],
+                      [1,2,3,4,5,6,7,8,9,10],
+                      [1,2,3,4,5,6,7,8,9,10],
+                      [1,2,3,4,5,6,7,8,9,10],
+                      [1,2,3,4,5,6,7,8,9,10],
+                      [1,2,3,4,5,6,7,8,9,10],
+                      [1,2,3,4,5,6,7,8,9,10]
+                  ]
+  var layoutBoard = new Board(10,10);
+  layoutBoard.initializeBoard(sequenceLayout);
+  layoutBoard.printBoard();
+  var game = new Game(6);
+  var ans = game.playCardOnBoard(1,1,23,1);
+  game.sequenceBoard.printBoard();
+  
+  
+  
