@@ -6,7 +6,7 @@ class SequenceDeck{
         let j=0;
         while(j<this.size)
         {
-            deck.push(j);
+            this.deck.push(j);
             j++;
         }
         this.shuffle();
@@ -23,7 +23,7 @@ class SequenceDeck{
     }
     shuffle() 
     {
-        fisherYates(this.deck);
+        this.fisherYates(this.deck);
     }
     isEmpty()
     {
@@ -146,14 +146,13 @@ class Game{
         this.deck = new SequenceDeck();
         this.sequenceBoard = new Board(this.n,this.m);
         this.players = [];
-        this.playerSize = players.length;
+        this.playerSize = 0;
         this.stat =0 ; //0 denotes not started, 1 denotes started
         this.turn = -1;
         this.playerDeckSize = 7; 
         this.playerTeamMap = []; // denotes the team number of that particular player
         this.playerDecks = [];
         this.setBonusChips(this.sequenceBoard);
-        this.playerSize=playerSize;
     }
     setBonusChips(board) // 4 is bonus chip
     {
