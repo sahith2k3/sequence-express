@@ -1,4 +1,41 @@
 class SequenceDeck{
+    constructor()
+    {
+        this.deck=[];
+        this.size=104;
+        let j=0;
+        while(j<this.size)
+        {
+            deck.push(j);
+            j++;
+        }
+        this.shuffle();
+    }
+    fisherYates(array) 
+    {
+      let currentIndex = array.length;
+      while (currentIndex != 0) {
+        let randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [
+          array[randomIndex], array[currentIndex]];
+      }
+    }
+    shuffle() 
+    {
+        fisherYates(this.deck);
+    }
+    isEmpty()
+    {
+        if(this.n==0)
+        return true;
+        else
+        return false;
+    }
+    draw()
+    {
+        return deck.pop();
+    }
     
 }
 class Board{
@@ -81,13 +118,40 @@ class Board{
     }
     
 }
-
+function random_number()
+{
+    let x=Math.random();
+    let y=Math.pow(10,15);
+    return Math.floor(x*y);
+}
+function random_number_between(a,b)
+{
+    if(a>b)
+    {
+        let temp=a;
+        a=b;
+        b=temp;
+    }
+    let size=(b-a+1);
+    let val=random_number();
+    val=val%size;
+    val=val+a;
+    return val;
+}
 class Game{
-    constructor(playerSize)
+    constructor()
     {
         this.n=10;
         this.m=10;
+        this.deck = new SequenceDeck();
         this.sequenceBoard = new Board(this.n,this.m);
+        this.players = [];
+        this.playerSize = players.length;
+        this.stat =0 ; //0 denotes not started, 1 denotes started
+        this.turn = -1;
+        this.playerDeckSize = 7; 
+        this.playerTeamMap = []; // denotes the team number of that particular player
+        this.playerDecks = [];
         this.setBonusChips(this.sequenceBoard);
         this.playerSize=playerSize;
     }
@@ -99,6 +163,95 @@ class Game{
         board.setVal(0,m-1,4);
         board.setVal(n-1,0,4);
         board.setVal(n-1,m-1,4);
+    }
+    dealCards()
+    {
+        let j=0;
+        while(j<this.playerSize)
+        {
+            let k=0;
+            let deck = [];
+            while(k<this.playerDeckSize)
+            {
+                deck.push(this.deck.draw());
+                k++;
+            }
+            playerDecks.push(deck);
+            j++;
+        }
+    }
+    addPlayer(player,team)
+    {
+        if(team<2)
+        {
+            this.players.push(player);
+            this.playerTeamMap.push(team);
+            return 1;
+        }
+        else
+        return -1;
+    }
+    teamCheck()
+    {
+        if(playerSize%2==0)
+        {
+            let count=0;
+            let j=0;
+            while(j<playerSize)
+            {
+                if(playerTeamMap[j]==0)
+                count++;
+                j++;
+            }
+            if(count*2==playerSize)
+            {
+                let newPlayers = [];
+                let newPlayerTeamMap = [];
+                j=0;
+                let p=0;
+                let q=1;
+                while(j<playerSize)
+                {
+                    if(playerTeamMap[j]==0)
+                    {
+                        newPlayers[p]=players[j];
+                        newPlayerTeamMap = playerTeamMap[j];
+                        p=p+2;
+                    }
+                    else
+                    {
+                        newPlayers[q]=players[j];
+                        newPlayerTeamMap = playerTeamMap[j];
+                        q=q+2;
+                    }
+                    j++;
+                }
+                this.players=newPlayers;
+                this.playerTeamMap = newPlayerTeamMap;
+                return 1;
+            }
+            else
+            return -2;
+            
+        }
+        else
+        return -1;
+        
+    }
+    start()
+    {
+        let r = this.teamCheck();
+        if(r==1)
+        {
+            this.stat=1;
+            this.dealCards();
+            this.turn = random_number()%2;
+            return 1;
+        }
+        else
+        {
+            return r;
+        }
     }
     validateCoordinates(x,y)
     {
@@ -141,14 +294,14 @@ class Game{
     }
     isJack(card)
     {
-        if(card%13==11)
+        if(card%13==10)
         return true;
         else
         return false;
     }
     isOneEyedJack(card)
     {
-        if(card%26==11)
+        if(card%26==10)
         return true;
         else
         return false;
