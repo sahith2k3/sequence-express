@@ -34,7 +34,7 @@ class SequenceDeck{
     }
     draw()
     {
-        return deck.pop();
+        return this.deck.pop();
     }
     
   }
@@ -127,7 +127,7 @@ class SequenceDeck{
         this.sequenceBoard = new Board(this.n,this.m);
         this.players = [];
         this.playerSize = 0;
-        this.stat =0 ; //0 denotes not started, 1 denotes started
+        this.stat =0 ; //0 denotes not started, 1 denotes started , 2 denotes end
         this.turn = -1;
         this.playerDeckSize = 7; 
         this.playerTeamMap = []; // denotes the team number of that particular player
@@ -155,7 +155,7 @@ class SequenceDeck{
                 deck.push(this.deck.draw());
                 k++;
             }
-            playerDecks.push(deck);
+            this.playerDecks.push(deck);
             j++;
         }
     }
@@ -165,6 +165,7 @@ class SequenceDeck{
         {
             this.players.push(player);
             this.playerTeamMap.push(team);
+            this.playerSize++;
             return 1;
         }
         else
@@ -172,35 +173,35 @@ class SequenceDeck{
     }
     teamCheck()
     {
-        if(playerSize%2==0)
+        if(this.playerSize%2==0)
         {
             let count=0;
             let j=0;
-            while(j<playerSize)
+            while(j<this.playerSize)
             {
-                if(playerTeamMap[j]==0)
+                if(this.playerTeamMap[j]==0)
                 count++;
                 j++;
             }
-            if(count*2==playerSize)
+            if(count*2==this.playerSize)
             {
                 let newPlayers = [];
                 let newPlayerTeamMap = [];
                 j=0;
                 let p=0;
                 let q=1;
-                while(j<playerSize)
+                while(j<this.playerSize)
                 {
-                    if(playerTeamMap[j]==0)
+                    if(this.playerTeamMap[j]==0)
                     {
-                        newPlayers[p]=players[j];
-                        newPlayerTeamMap = playerTeamMap[j];
+                        newPlayers[p]=this.players[j];
+                        newPlayerTeamMap[p] = this.playerTeamMap[j];
                         p=p+2;
                     }
                     else
                     {
-                        newPlayers[q]=players[j];
-                        newPlayerTeamMap = playerTeamMap[j];
+                        newPlayers[q]=this.players[j];
+                        newPlayerTeamMap[q] = this.playerTeamMap[j];
                         q=q+2;
                     }
                     j++;
@@ -321,13 +322,76 @@ class SequenceDeck{
             return -1;
         }
     }
-    playCard(playerIndex,card,x,y)
+    getPlayerIndex(player)
     {
-        
+        let j=0;
+        while(j<this.playerSize && this.players==player)
+        j++;
+        if(j==this.playerSize)
+        return -1;
+        else
+        return j;
+    }
+    verfiyCard(playerIndex,card)
+    {
+        let deck=this.playerDecks[playerIndex];
+        let j=0;
+        while(j<this.playerDeckSize && deck[j]!=card)
+        j++;
+        if(j==this.playerDeckSize)
+        return false;
+        else
+        return true;
+    }
+    removeAndDealCard(playerIndex,card)
+    {
+        let deck=this.playerDecks[playerIndex];
+        let j=0;
+        while(j<this.playerDeckSize && deck[j]!=card)
+        j++;
+        if(j==this.playerDeckSize)
+        return -1;
+        else
+        {
+            this.playerDecks[playerIndex][j]=this.deck.draw();
+            return 1;
+        }
+    }
+    playCard(player,card,x,y)
+    {
+        let playerIndex=getPlayerTeam(player);
+        if(playerIndex==turn)
+        {
+            let team=this.playerTeamMap[playerIndex];
+            let color=team;
+            if(verfiyCard(playerIndex,card)==1)
+            {
+                if(this.playCardOnBoard(x,y,card,color)!=-1)
+                {
+                    this.removeAndDealCard();
+                    if(this.checkSequence()==false)
+                    {
+                        this.stat=2;
+                    }
+                    else
+                    {
+                        turn=(turn+1)%playerSize;
+                        return -2; //continue game
+                    }
+                }
+                else //not valid move
+                return -1;
+            }
+            else //doesnt have that card
+            return -1;
+            
+        }
+        else //not his turn
+        return -1;
     }
     checkSequence(color)
     {
-        
+        return false;
     }
   }
   var myBoard= new Board(10,10);
@@ -346,10 +410,21 @@ class SequenceDeck{
                   ]
   var layoutBoard = new Board(10,10);
   layoutBoard.initializeBoard(sequenceLayout);
-  layoutBoard.printBoard();
   var game = new Game(6);
   var ans = game.playCardOnBoard(1,1,23,1);
+  console.log("Initial State");
   game.sequenceBoard.printBoard();
+  console.log("Adding users");
+  game.addPlayer(101, 0);
+  game.addPlayer(102, 0);
+  game.addPlayer(103, 0);
+  game.addPlayer(104, 1);
+  game.addPlayer(105, 1);
+  game.addPlayer(106, 1);
+  console.log(game);
+  console.log("Starting game..");
+  game.start();
+  console.log(game);
   
   
   
