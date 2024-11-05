@@ -373,6 +373,7 @@ class SequenceDeck{
                     if(this.checkSequence()==true)
                     {
                         this.stat=2;
+                        return team;
                     }
                     else
                     {
