@@ -119,10 +119,11 @@ class SequenceDeck{
     
   }
   class Game{
-    constructor()
+    constructor(gameId)
     {
         this.n=10;
         this.m=10;
+        this.gameId = gameId;
         this.deck = new SequenceDeck();
         this.sequenceBoard = new Board(this.n,this.m);
         this.players = [];
@@ -410,7 +411,7 @@ class SequenceDeck{
                   ]
   var layoutBoard = new Board(10,10);
   layoutBoard.initializeBoard(sequenceLayout);
-  var game = new Game(6);
+  var game = new Game(69420);
   var ans = game.playCardOnBoard(1,1,23,1);
   console.log("Initial State");
   game.sequenceBoard.printBoard();
