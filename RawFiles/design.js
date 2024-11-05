@@ -162,7 +162,7 @@ class SequenceDeck{
     }
     addPlayer(player,team)
     {
-        if(team<2)
+        if(team<2 && this.stat==0)
         {
             this.players.push(player);
             this.playerTeamMap.push(team);
@@ -370,7 +370,7 @@ class SequenceDeck{
                 if(this.playCardOnBoard(x,y,card,color)!=-1)
                 {
                     this.removeAndDealCard();
-                    if(this.checkSequence()==false)
+                    if(this.checkSequence()==true)
                     {
                         this.stat=2;
                     }
@@ -398,6 +398,7 @@ class SequenceDeck{
   var myBoard= new Board(10,10);
   var row = [1,2,3,4,5,6,7,8,9,10];
   var sequenceLayout = [
+                      [14,2,3,4,5,6,7,8,9,14],
                       [1,2,3,4,5,6,7,8,9,10],
                       [1,2,3,4,5,6,7,8,9,10],
                       [1,2,3,4,5,6,7,8,9,10],
@@ -406,9 +407,8 @@ class SequenceDeck{
                       [1,2,3,4,5,6,7,8,9,10],
                       [1,2,3,4,5,6,7,8,9,10],
                       [1,2,3,4,5,6,7,8,9,10],
-                      [1,2,3,4,5,6,7,8,9,10],
-                      [1,2,3,4,5,6,7,8,9,10]
-                  ]
+                      [14,2,3,4,5,6,7,8,9,14]
+                  ];
   var layoutBoard = new Board(10,10);
   layoutBoard.initializeBoard(sequenceLayout);
   var game = new Game(69420);
